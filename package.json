@@ -1,0 +1,11 @@
+{
+  "name": "fcm-apollo-server",
+  "version": "1.0.0",
+  "description": "An Apollo GraphQL implementation of a Firebase Cloud Messaging server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
