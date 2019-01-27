@@ -4,7 +4,8 @@
   "description": "An Apollo GraphQL implementation of a Firebase Cloud Messaging server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docs:dev": "vuepress dev docs",
+    "docs:deploy": "vuepress build docs && firebase deploy --only hosting"
   },
   "author": "",
   "license": "ISC",

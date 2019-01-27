@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FCM Apollo Server</title>
+    <meta name="description" content="">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.9d53ebe0.css" as="style"><link rel="preload" href="/assets/js/app.4ac67146.js" as="script"><link rel="preload" href="/assets/js/3.eef5e487.js" as="script"><link rel="prefetch" href="/assets/js/2.c9a6a59f.js"><link rel="prefetch" href="/assets/js/4.292dea78.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.9d53ebe0.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-exact-active router-link-active"></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><!---->  <!----> </div> <div class="page"> <div class="content"><h1 id="fcm-apollo-server"><a href="#fcm-apollo-server" aria-hidden="true" class="header-anchor">#</a> FCM Apollo Server</h1> <p>This is a super simple Apollo GraphQL implementation for handling your Firebase Cloud Messaging tasks using Firebase Cloud Functions</p> <h2 id="what-can-you-do-😎"><a href="#what-can-you-do-😎" aria-hidden="true" class="header-anchor">#</a> What can you do 😎</h2> <ul><li>Send Messages</li> <li>Subscribe to Topics</li> <li>Unsubscribe to Topics</li></ul> <h2 id="usage"><a href="#usage" aria-hidden="true" class="header-anchor">#</a> Usage</h2> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">const</span> functions <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;firebase-functions&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">{</span> FCMApolloServer <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;fcm-apollo-server&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> admin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;firebase-admin&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> serviceAccount <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;path/to/serviceAccountKey.json&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+admin<span class="token punctuation">.</span><span class="token function">initializeApp</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  credential<span class="token punctuation">:</span> admin<span class="token punctuation">.</span>credential<span class="token punctuation">.</span><span class="token function">cert</span><span class="token punctuation">(</span>serviceAccount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  databaseURL<span class="token punctuation">:</span> <span class="token string">&quot;https://&lt;DATABASE_NAME&gt;.firebaseio.com&quot;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> messaging <span class="token operator">=</span> admin<span class="token punctuation">.</span><span class="token function">messaging</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+exports<span class="token punctuation">.</span>fcm <span class="token operator">=</span> functions<span class="token punctuation">.</span>https<span class="token punctuation">.</span><span class="token function">onRequest</span><span class="token punctuation">(</span><span class="token function">FCMApolloServer</span><span class="token punctuation">(</span>messaging<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>After deploying/serving the <code>fcm</code> function, you get a GraphQL server that allows you to <strong>send messages</strong>,<strong>subscribe to topics</strong>, <strong>unsubscribe from topics</strong></p> <h3 id="graphql-schema"><a href="#graphql-schema" aria-hidden="true" class="header-anchor">#</a> GraphQL Schema</h3> <h4 id="sending-a-message"><a href="#sending-a-message" aria-hidden="true" class="header-anchor">#</a> Sending a message</h4> <div class="language- extra-class"><pre class="language-text"><code>mutation {
+  send(message: {
+    token: &quot;&lt;token&gt;&quot;,
+    notification: {
+      title: &quot;&lt;title&gt;&quot;,
+      body: &quot;&lt;body&gt;&quot;
+    }
+  })
+}
+</code></pre></div><h4 id="subscribe-to-a-topic"><a href="#subscribe-to-a-topic" aria-hidden="true" class="header-anchor">#</a> Subscribe to a topic</h4> <div class="language- extra-class"><pre class="language-text"><code>mutation {
+  subscribeToTopic(tokens: [&quot;&lt;token&gt;&quot;], topic: &quot;&lt;your-topic&gt;&quot;) {
+    successCount
+    failureCount
+    errors
+  }
+}
+</code></pre></div><h4 id="unsubscribe-from-topic"><a href="#unsubscribe-from-topic" aria-hidden="true" class="header-anchor">#</a> Unsubscribe from topic</h4> <div class="language- extra-class"><pre class="language-text"><code>mutation {
+  unsubscribeFromTopic(tokens: [&quot;&lt;token&gt;&quot;], topic: &quot;&lt;your-topic&gt;&quot;) {
+    successCount
+    failureCount
+    errors
+  }
+}
+</code></pre></div></div> <div class="page-edit"><!----> <!----></div> <!----> </div> <!----></div></div>
+    <script src="/assets/js/app.4ac67146.js" defer></script><script src="/assets/js/3.eef5e487.js" defer></script>
+  </body>
+</html>
