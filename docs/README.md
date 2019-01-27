@@ -1,14 +1,20 @@
-# FCM Apollo Server
+# Intro
 
-This is a super simple Apollo GraphQL implementation for handling your Firebase Cloud Messaging tasks using Firebase Cloud Functions
+This is a super simple Apollo GraphQL bootstrap for handling your Firebase Cloud Messaging tasks using Firebase Cloud Functions
 
-## What can you do 😎
-
-* Send Messages
-* Subscribe to Topics
-* Unsubscribe to Topics
+::: tip
+Now you don't have to setup a REST API to do this anymore
+:::
 
 ## Usage
+
+Setup a Firebase Functions project and then you can install the `FCM Apollo Server` library
+
+```
+npm i --save fcm-apollo-server
+```
+
+Follow the below example to get your `FCM` server up-and-running
 
 ```javascript
 const functions = require("firebase-functions");
@@ -27,9 +33,15 @@ const messaging = admin.messaging();
 exports.fcm = functions.https.onRequest(FCMApolloServer(messaging).createHandler());
 ```
 
-After deploying/serving the `fcm` function, you get a GraphQL server that allows you to **send messages**,**subscribe to topics**, **unsubscribe from topics**
+After deploying/serving the `fcm` function, you get a GraphQL server that allows you to **send messages**, **subscribe to topics**, **unsubscribe from topics**
+
+::: tip
+For configuring things like `CORS`, refer to the **apollo-server-cloud-functions** [documentation](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-cloud-functions)
+:::
 
 ### GraphQL Schema
+
+All the GraphQL actions are **mutations**
 
 #### Sending a message 
 
@@ -68,3 +80,7 @@ mutation {
   }
 }
 ```
+
+::: tip 
+Refer to the Firebase Admin SDK for details on [Firebase Cloud Messaging API](https://firebase.google.com/docs/cloud-messaging/admin/)
+:::
